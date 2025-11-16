@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>인간행동과 사회환경 예상문제 150선</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Noto Sans KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    body {
+      font-family: "Noto Sans KR", system-ui, -apple-system,
+        BlinkMacSystemFont, sans-serif;
+    }
+    .gradient-bg {
+      background: radial-gradient(
+        circle at top left,
+        #eef2ff,
+        #e0f2fe 35%,
+        #fef2f2 70%
+      );
+    }
+    .quiz-option {
+      transition: all 0.2s ease;
+    }
+    .quiz-option.correct {
+      border-color: rgb(34 197 94);
+      background-color: rgb(220 252 231);
+    }
+    .quiz-option.incorrect {
+      border-color: rgb(248 113 113);
+      background-color: rgb(254 226 226);
+    }
+    .quiz-option.disabled {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+  </style>
+
+  <!-- ① 문제 데이터: 반드시 main 스크립트보다 먼저 로드 -->
+  <script src="inhaengsa-questions.js"></script>
+</head>
+<body class="gradient-bg min-h-screen">
+  <div
+    class="min-h-screen flex items-center justify-center px-3 py-6 sm:px-4"
+  >
+    <div
+      class="w-full max-w-4xl bg-white/80 backdrop-blur rounded-2xl shadow-xl border border-slate-200 p-4 sm:p-6 md:p-8"
+    >
+      <!-- 헤더 영역 -->
+      <header class="mb-4 sm:mb-6">
+        <div
+          class="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 mb-2"
+        >
+          <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+          <span class="text-xs sm:text-sm font-medium text-indigo-700">
+            인간행동과 사회환경 · 4지 선다형 객관식
+          </span>
+        </div>
+        <div
+          class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2"
+        >
+          <div>
+            <h1
+              class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900"
+            >
+              인간행동과 사회환경 예상문제 150선
+            </h1>
+            <p class="mt-1 text-xs sm:text-sm text-slate-600">
+              한 문제씩 풀면서 개념·이론·해설까지 한 번에 정리하는
+              온라인 연습 사이트입니다.
+            </p>
+          </div>
+          <div
+            class="flex flex-wrap items-center gap-2 mt-1 sm:mt-0 text-xs sm:text-sm"
+          >
+            <div
+              class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-medium"
+            >
+              <span id="progressText">0 / 0</span> 문항
+            </div>
+            <div
+              class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-medium"
+            >
+              정답률:
+              <span id="scoreRateText">0%</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- 상단 컨트롤 영역 -->
+      <section
+        class="mb-4 sm:mb-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between"
+      >
+        <div class="flex items-center gap-2 text-xs sm:text-sm">
+          <label for="modeSelect" class="text-slate-700 font-medium"
+            >문제 출제 방식</label
+          >
+          <select
+            id="modeSelect"
+            class="border border-slate-300 rounded-lg px-2 py-1 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="sequential">순서대로 풀기</option>
+            <option value="random">랜덤으로 풀기</option>
+          </select>
+        </div>
+
+        <div class="flex flex-wrap gap-2 text-xs sm:text-sm">
+          <button
+            id="prevBtn"
+            class="px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50"
+          >
+            ← 이전 문제
+          </button>
+          <button
+            id="nextBtn"
+            class="px-3 py-1.5 rounded-lg border border-indigo-500 text-white bg-indigo-500 hover:bg-indigo-600"
+          >
+            다음 문제 →
+          </button>
+          <button
+            id="resetBtn"
+            class="px-3 py-1.5 rounded-lg border border-rose-300 text-rose-700 bg-rose-50 hover:bg-rose-100"
+          >
+            점수 초기화
+          </button>
+        </div>
+      </section>
+
+      <!-- 문제 카드 -->
+      <main>
+        <div
+          class="rounded-2xl border border-slate-200 bg-white shadow-sm p-4 sm:p-5 md:p-6"
+        >
+          <!-- 문제 헤더 -->
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div class="flex items-center gap-2">
+              <div
+                class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-600 text-white text-sm font-bold"
+              >
+                <span id="questionNumber">Q1</span>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  id="questionBadge"
+                  class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-700"
+                  >기본 개념 확인</span
+                >
+                <span
+                  id="questionMeta"
+                  class="mt-0.5 text-[11px] text-slate-500"
+                  >문항 유형: 4지 선다형</span
+                >
+              </div>
+            </div>
+            <div class="text-right text-xs text-slate-500">
+              맞힌 문항:
+              <span id="scoreText" class="font-semibold text-emerald-600"
+                >0</span
+              >
+            </div>
+          </div>
+
+          <!-- 문제 지문 -->
+          <div class="mb-3 sm:mb-4">
+            <p
+              id="questionText"
+              class="text-sm sm:text-base text-slate-900 leading-relaxed"
+            >
+              문제 로딩 중...
+            </p>
+          </div>
+
+          <!-- 보기 -->
+          <div id="optionsContainer" class="space-y-2 mb-4">
+            <!-- 버튼이 JS로 삽입됩니다 -->
+          </div>
+
+          <!-- 피드백 박스 -->
+          <div
+            id="feedbackBox"
+            class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 sm:px-4 sm:py-3"
+          >
+            <p
+              id="feedbackStatus"
+              class="text-xs sm:text-sm font-semibold text-slate-700 mb-1"
+            >
+              보기 중 하나를 선택하면 정답/해설이 표시됩니다.
+            </p>
+            <div
+              id="feedbackExplanation"
+              class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line"
+            ></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ② 메인 스크립트 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const allQuestions = window.INHAENGSA_QUESTIONS || [];
+      if (!allQuestions.length) {
+        alert(
+          "문제 데이터가 로드되지 않았습니다. inhaengsa-questions.js를 확인해 주세요."
+        );
+        return;
+      }
+
+      let currentIndex = 0;
+      let score = 0;
+      let answeredCount = 0;
+      let questionAnswered = false;
+      let mode = "sequential"; // 'sequential' | 'random'
+
+      // DOM 요소 참조
+      const questionNumberEl = document.getElementById("questionNumber");
+      const questionBadgeEl = document.getElementById("questionBadge");
+      const questionMetaEl = document.getElementById("questionMeta");
+      const questionTextEl = document.getElementById("questionText");
+      const optionsContainer = document.getElementById("optionsContainer");
+      const feedbackBox = document.getElementById("feedbackBox");
+      const feedbackStatus = document.getElementById("feedbackStatus");
+      const feedbackExplanation =
+        document.getElementById("feedbackExplanation");
+
+      const progressText = document.getElementById("progressText");
+      const scoreText = document.getElementById("scoreText");
+      const scoreRateText = document.getElementById("scoreRateText");
+
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const modeSelect = document.getElementById("modeSelect");
+
+      function updateProgress() {
+        progressText.textContent = `${currentIndex + 1} / ${
+          allQuestions.length
+        }`;
+        scoreText.textContent = score;
+        const rate =
+          answeredCount === 0
+            ? 0
+            : Math.round((score / answeredCount) * 100);
+        scoreRateText.textContent = `${rate}%`;
+      }
+
+      function getBadgeLabel(type) {
+        if (type === "concept") return "핵심 개념 응용";
+        if (type === "advanced") return "심화·응용 문제";
+        return "기본 개념 확인";
+      }
+
+      function renderQuestion() {
+        const q = allQuestions[currentIndex];
+        questionAnswered = false;
+
+        // 상단 정보
+        questionNumberEl.textContent = `Q${q.id ?? currentIndex + 1}`;
+        questionBadgeEl.textContent = getBadgeLabel(q.type);
+        questionMetaEl.textContent = "문항 유형: 4지 선다형";
+
+        // 문제 텍스트
+        questionTextEl.textContent = q.question;
+
+        // 보기 버튼 생성
+        optionsContainer.innerHTML = "";
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement("button");
+          btn.className =
+            "quiz-option w-full text-left rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs sm:text-sm hover:bg-slate-50";
+          btn.innerHTML = `<span class="font-semibold mr-1">(${String.fromCharCode(
+            65 + idx
+          )})</span>${opt}`;
+          btn.addEventListener("click", () => handleOptionClick(idx));
+          optionsContainer.appendChild(btn);
+        });
+
+        // 피드백 초기화
+        feedbackStatus.textContent =
+          "보기 중 하나를 선택하면 정답 여부와 해설이 표시됩니다.";
+        feedbackStatus.className =
+          "text-xs sm:text-sm font-semibold text-slate-700 mb-1";
+        feedbackExplanation.textContent = "";
+        feedbackBox.classList.remove("border-emerald-200", "border-rose-200");
+
+        updateProgress();
+      }
+
+      function handleOptionClick(selectedIndex) {
+        if (questionAnswered) return;
+        questionAnswered = true;
+        answeredCount += 1;
+
+        const q = allQuestions[currentIndex];
+        const optionButtons = Array.from(optionsContainer.children);
+
+        optionButtons.forEach((btn, idx) => {
+          btn.classList.add("disabled");
+          if (idx === q.answer) {
+            btn.classList.add("correct");
+          } else if (idx === selectedIndex && idx !== q.answer) {
+            btn.classList.add("incorrect");
+          }
+        });
+
+        if (selectedIndex === q.answer) {
+          score += 1;
+          feedbackStatus.textContent =
+            "✅ 정답입니다! 잘 이해하고 있어요.";
+          feedbackStatus.className =
+            "text-xs sm:text-sm font-semibold mb-1 text-emerald-700";
+          feedbackBox.classList.remove("border-rose-200");
+          feedbackBox.classList.add("border-emerald-200");
+        } else {
+          const correctText = q.options[q.answer];
+          feedbackStatus.textContent =
+            "❌ 아쉽습니다. 다시 개념을 정리해 보세요.";
+          feedbackStatus.className =
+            "text-xs sm:text-sm font-semibold mb-1 text-rose-700";
+          feedbackBox.classList.remove("border-emerald-200");
+          feedbackBox.classList.add("border-rose-200");
+          feedbackExplanation.innerHTML = `
+            <p class="mb-1">
+              <span class="font-semibold">정답:</span>
+              (${String.fromCharCode(65 + q.answer)}) ${correctText}
+            </p>
+            <p>${q.explanation || "해설이 준비되어 있지 않습니다."}</p>
+          `;
+        }
+
+        updateProgress();
+      }
+
+      function goToNextQuestion() {
+        if (mode === "random") {
+          const total = allQuestions.length;
+          if (total <= 1) return;
+          let nextIndex = currentIndex;
+          while (nextIndex === currentIndex) {
+            nextIndex = Math.floor(Math.random() * total);
+          }
+          currentIndex = nextIndex;
+        } else {
+          currentIndex =
+            (currentIndex + 1) % allQuestions.length;
+        }
+        renderQuestion();
+      }
+
+      function goToPrevQuestion() {
+        if (mode === "random") {
+          // 랜덤 모드에서는 단순히 이전 인덱스로
+          currentIndex =
+            (currentIndex - 1 + allQuestions.length) %
+            allQuestions.length;
+        } else {
+          currentIndex =
+            (currentIndex - 1 + allQuestions.length) %
+            allQuestions.length;
+        }
+        renderQuestion();
+      }
+
+      function resetScore() {
+        if (
+          !confirm(
+            "정답 개수와 정답률을 초기화하시겠습니까? (문제 번호는 그대로 유지됩니다)"
+          )
+        )
+          return;
+        score = 0;
+        answeredCount = 0;
+        updateProgress();
+      }
+
+      // 이벤트 바인딩
+      nextBtn.addEventListener("click", goToNextQuestion);
+      prevBtn.addEventListener("click", goToPrevQuestion);
+      resetBtn.addEventListener("click", resetScore);
+      modeSelect.addEventListener("change", (e) => {
+        mode = e.target.value;
+      });
+
+      // 초기 렌더링
+      renderQuestion();
+    });
+  </script>
+</body>
+</html>
