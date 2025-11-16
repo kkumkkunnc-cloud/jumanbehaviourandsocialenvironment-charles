@@ -1,7 +1,7 @@
 // inhaengsa-questions.js
-// 인간행동과 사회환경 예상문제 150선 중 일부 예시 (1~10)
 
-window.INHAENGSA_QUESTIONS = [
+// 1) 전역에서 쓸 문제 배열 선언
+const INHAENGSA_QUESTIONS = [
   {
     id: 1,
     lectureId: 1,
@@ -2136,4 +2136,10 @@ window.INHAENGSA_QUESTIONS = [
     explanation:
       "P-I-E 관점은 개인의 강점과 환경적 압력을 함께 평가하여 개입하는 것을 중시합니다."
   }
+];
+
+// 2) window에 붙여주기 (사실 위 const만 있어도 되지만, 안전하게)
+if (typeof window !== "undefined") {
+  window.INHAENGSA_QUESTIONS = INHAENGSA_QUESTIONS;
+}
 
