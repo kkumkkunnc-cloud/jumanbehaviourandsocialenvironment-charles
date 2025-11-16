@@ -156,7 +156,7 @@ const INHAENGSA_QUESTIONS = [
     answer: 1,
     explanation:
       "해설: 자유의지(Free Will)는 인간이 환경이나 기존 규칙에 종속되지 않고 자신의 행동을 독립적·주체적으로 선택하고 결정하는 능력입니다. 인간은 이 자유의지를 통해 현재의 모습에 불만을 느끼고, 전통과 관습을 재해석·개선하려는 욕구를 가지게 됩니다. 이러한 성향이 새로운 변화를 추구하게 만들고, 전략적 선택 능력과 결합될 때 개인·공동체의 지속적인 질적 발달이 가능해집니다."
-  }
+  },
     {
     id: 11,
     lectureId: 1,
@@ -1480,7 +1480,7 @@ const INHAENGSA_QUESTIONS = [
     answer: 0,
     explanation:
       "행동주의적 관점에서는 바람직하지 않은 행동을 약물이나 해석이 아니라 ‘학습 원리’를 이용해 수정하려 합니다. 혐오적 조건화는 부적응 행동에 불쾌한 자극을 결합해 그 행동을 감소시키려는 대표적인 행동치료 기법입니다."
-  }
+  },
 {
     id: 101,
     lectureId: 1,
@@ -1772,7 +1772,7 @@ const INHAENGSA_QUESTIONS = [
     explanation:
       "고착은 특정 발달 단계(예: 구강기)에 지나치게 머무르는 현상입니다."
   },
-
+]; 
   {
     id: 124,
     lectureId: 1,
@@ -2142,4 +2142,5 @@ const INHAENGSA_QUESTIONS = [
 if (typeof window !== "undefined") {
   window.INHAENGSA_QUESTIONS = INHAENGSA_QUESTIONS;
 }
+
 
