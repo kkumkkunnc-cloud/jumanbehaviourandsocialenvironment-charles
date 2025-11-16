@@ -1772,7 +1772,6 @@ const INHAENGSA_QUESTIONS = [
     explanation:
       "고착은 특정 발달 단계(예: 구강기)에 지나치게 머무르는 현상입니다."
   },
-]; 
   {
     id: 124,
     lectureId: 1,
@@ -2142,5 +2141,6 @@ const INHAENGSA_QUESTIONS = [
 if (typeof window !== "undefined") {
   window.INHAENGSA_QUESTIONS = INHAENGSA_QUESTIONS;
 }
+
 
 
